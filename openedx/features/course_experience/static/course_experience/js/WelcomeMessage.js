@@ -1,5 +1,6 @@
 /* globals $ */
 import 'jquery.cookie';
+import { clampHtmlByWords } from 'common/js/utils/clamp-html';
 
 export class WelcomeMessage {  // eslint-disable-line import/prefer-default-export
 
@@ -11,7 +12,7 @@ export class WelcomeMessage {  // eslint-disable-line import/prefer-default-expo
         'X-CSRFToken': $.cookie('csrftoken'),
       },
       success: () => {
-        $('.welcome-message').hide();
+        $('.welcsavepointome-message').hide();
       },
     });
   }
@@ -35,5 +36,37 @@ export class WelcomeMessage {  // eslint-disable-line import/prefer-default-expo
       }
     }
     $('.dismiss-message button').click(() => WelcomeMessage.dismissWelcomeMessage(options.dismissUrl));
+
+
+    // "Show More" support for welcome messages (i.e. the update message)
+    const welcomeMessage = document.querySelector('.welcome-message-content');
+    const longMessage = welcomeMessage.cloneNode(true);
+      clampHtmlByWords(welcomeMessage, 100);
+    console.log('MIKE:', longMessage);
+    const showMoreButton = document.querySelector('#welcome-message-show-more');
+    $('.welcome-message .welcome-message-show-more').click((event) => {
+        console.log("MIKE: clicked", event);
+
+      // const toggleAllExpanded = toggleAllButton.getAttribute('aria-expanded') === 'true';
+      // let sectionAction;
+      // /* globals gettext */
+      // if (toggleAllExpanded) {
+      //   toggleAllButton.setAttribute('aria-expanded', 'false');
+      //   sectionAction = collapseSection;
+      //   toggleAllSpan.classList.add(extraPaddingClass);
+      //   toggleAllSpan.innerText = gettext('Expand All');
+      // } else {
+      //   toggleAllButton.setAttribute('aria-expanded', 'true');
+      //   sectionAction = expandSection;
+      //   toggleAllSpan.classList.remove(extraPaddingClass);
+      //   toggleAllSpan.innerText = gettext('Collapse All');
+      // }
+      // const sections = Array.prototype.slice.call(document.querySelectorAll('.accordion-trigger'));
+      // sections.forEach((sectionToggleButton) => {
+      //   sectionAction(sectionToggleButton);
+      // });
+      event.stopImmediatePropagation();
+    });
+
   }
 }
